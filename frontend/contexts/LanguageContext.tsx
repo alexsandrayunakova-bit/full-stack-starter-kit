@@ -18,14 +18,14 @@ const translations: Record<Language, Record<string, string>> = {
     // Navbar
     "nav.dashboard": "Dashboard",
     "nav.tools": "Инструменти",
-    "nav.addTool": "Добави тул",
+    "nav.addTool": "Добави инструмент",
     "nav.profile": "Профил",
     "nav.logout": "Изход",
     "nav.login": "Вход",
 
     // Home
     "home.title": "AI Tools Platform",
-    "home.tools": "Инструменти каталог",
+    "home.tools": "Каталог с инструменти",
     "home.login": "Вход",
 
     // Dashboard
@@ -35,7 +35,7 @@ const translations: Record<Language, Record<string, string>> = {
     "dashboard.myTools": "Мои инструменти",
     "dashboard.views": "Прегледи",
     "dashboard.quickActions": "Бързи действия",
-    "dashboard.addNewTool": "Добави нов тул",
+    "dashboard.addNewTool": "Добави нов инструмент",
     "dashboard.browseTools": "Разгледай инструменти",
     "dashboard.myProfile": "Моят профил",
     "dashboard.recentTools": "Последни инструменти",
@@ -161,12 +161,14 @@ const translations: Record<Language, Record<string, string>> = {
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("bg");
+  const [language, setLanguageState] = useState<Language>("en");
 
   useEffect(() => {
     const savedLang = localStorage.getItem("language") as Language;
     if (savedLang && ["bg", "en", "de"].includes(savedLang)) {
       setLanguageState(savedLang);
+    } else {
+      setLanguageState("en"); // Default to English
     }
   }, []);
 
