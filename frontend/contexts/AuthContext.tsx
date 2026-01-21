@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await api.post("/api/logout", {});
     localStorage.removeItem("token");
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
   return (
