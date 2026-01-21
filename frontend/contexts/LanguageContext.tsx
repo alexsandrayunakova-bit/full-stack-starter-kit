@@ -61,6 +61,9 @@ const translations: Record<Language, Record<string, string>> = {
     "tools.allCategories": "Всички категории",
     "tools.visitWebsite": "Посети сайта",
     "tools.noLink": "Няма линк",
+    "tools.noToolsYet": "Все още няма инструменти",
+    "tools.addFirst": "Добави първия инструмент",
+    "tools.viewsCount": "прегледа",
   },
   en: {
     // Navbar
@@ -109,6 +112,9 @@ const translations: Record<Language, Record<string, string>> = {
     "tools.allCategories": "All categories",
     "tools.visitWebsite": "Visit Website",
     "tools.noLink": "No Link",
+    "tools.noToolsYet": "No tools yet",
+    "tools.addFirst": "Add first tool",
+    "tools.viewsCount": "views",
   },
   de: {
     // Navbar
@@ -157,6 +163,9 @@ const translations: Record<Language, Record<string, string>> = {
     "tools.allCategories": "Alle Kategorien",
     "tools.visitWebsite": "Website besuchen",
     "tools.noLink": "Kein Link",
+    "tools.noToolsYet": "Noch keine Werkzeuge",
+    "tools.addFirst": "Erstes Tool hinzufügen",
+    "tools.viewsCount": "Ansichten",
   },
 };
 
