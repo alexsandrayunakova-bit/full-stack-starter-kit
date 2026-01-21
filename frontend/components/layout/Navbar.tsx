@@ -73,9 +73,9 @@ export default function Navbar() {
                   `}
                 >
                   <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold">
-                    {user.name.charAt(0).toUpperCase()}
+                    {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                   </div>
-                  <span className="font-medium">{user.name}</span>
+                  <span className="font-medium">{user.name || user.email}</span>
                 </Link>
 
                 <button
@@ -146,7 +146,7 @@ export default function Navbar() {
                       }
                     `}
                   >
-                    👤 Профил ({user.name})
+                    👤 Профил ({user.name || user.email})
                   </Link>
                   <button
                     onClick={() => {
