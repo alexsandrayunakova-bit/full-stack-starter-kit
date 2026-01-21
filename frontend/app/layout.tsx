@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   keywords: ["AI", "tools", "платформа", "инструменти", "управление"],
   authors: [{ name: "AI Tools Platform Team" }],
   viewport: "width=device-width, initial-scale=1",
-  themeColor: "#3b82f6",
+  themeColor: "#a855f7",
 };
 
 export default function RootLayout({
@@ -23,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bg" className={inter.variable}>
-      <body className="antialiased">
+    <html lang="bg" className={poppins.variable}>
+      <body className="antialiased font-sans">
         <Providers>
           <a href="#main-content" className="skip-to-main">
             Към основното съдържание

@@ -71,34 +71,34 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-primary-600 via-secondary-600 to-accent-600 bg-clip-text text-transparent mb-2">
             Добре дошъл, {user.name}! 👋
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">
             Роля: <Badge variant="primary">{user.role?.display_name || "Потребител"}</Badge>
           </p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-primary-500 to-primary-700 text-white">
+          <Card className="bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
             <CardBody className="text-center py-8">
-              <div className="text-5xl font-bold mb-2">{stats.totalTools}</div>
-              <div className="text-primary-100 font-medium">Общо инструменти</div>
+              <div className="text-6xl font-extrabold mb-2">{stats.totalTools}</div>
+              <div className="text-primary-100 font-bold text-lg">Общо инструменти</div>
             </CardBody>
           </Card>
 
-          <Card className="bg-gradient-to-br from-secondary-500 to-secondary-700 text-white">
+          <Card className="bg-gradient-to-br from-secondary-500 to-secondary-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
             <CardBody className="text-center py-8">
-              <div className="text-5xl font-bold mb-2">{stats.myTools}</div>
-              <div className="text-secondary-100 font-medium">Мои инструменти</div>
+              <div className="text-6xl font-extrabold mb-2">{stats.myTools}</div>
+              <div className="text-secondary-100 font-bold text-lg">Мои инструменти</div>
             </CardBody>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500 to-green-700 text-white">
+          <Card className="bg-gradient-to-br from-info-500 to-info-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
             <CardBody className="text-center py-8">
-              <div className="text-5xl font-bold mb-2">{stats.recentViews}</div>
-              <div className="text-green-100 font-medium">Прегледи</div>
+              <div className="text-6xl font-extrabold mb-2">{stats.recentViews}</div>
+              <div className="text-info-100 font-bold text-lg">Прегледи</div>
             </CardBody>
           </Card>
         </div>

@@ -29,11 +29,11 @@ export default function Navbar() {
   const navLinks = getNavLinks();
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-40">
+    <nav className="bg-gradient-to-r from-white via-primary-50 to-secondary-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 shadow-lg sticky top-0 z-40 border-b-2 border-primary-200 dark:border-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary-600 hover:text-primary-700 transition-colors">
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent hover:from-primary-700 hover:to-secondary-700 transition-all">
             <span className="text-2xl">🤖</span>
             <span className="hidden sm:inline">AI Tools</span>
           </Link>
@@ -72,15 +72,15 @@ export default function Navbar() {
                     }
                   `}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 via-accent-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                     {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                   </div>
-                  <span className="font-medium">{user.name || user.email}</span>
+                  <span className="font-semibold">{user.name || user.email}</span>
                 </Link>
 
                 <button
                   onClick={() => logout()}
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
+                  className="px-4 py-2 text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-gray-700 rounded-lg transition-all font-semibold"
                 >
                   Изход
                 </button>
@@ -88,7 +88,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-all"
+                className="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg"
               >
                 Вход
               </Link>

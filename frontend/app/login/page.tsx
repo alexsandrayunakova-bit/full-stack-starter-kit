@@ -36,13 +36,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-100 via-secondary-50 to-accent-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+      <Card className="w-full max-w-md shadow-2xl border-2 border-primary-200">
         <CardHeader>
-          <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+          <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
             Вход в системата
           </h1>
-          <p className="text-center text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-center text-gray-600 dark:text-gray-400 mt-2 font-semibold">
             AI Tools Platform
           </p>
         </CardHeader>
