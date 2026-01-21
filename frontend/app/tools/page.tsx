@@ -170,59 +170,78 @@ export default function ToolsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTools.map((tool) => (
                 <Card key={tool.id} hover>
-                  <Link href={`/tools/${tool.id}`}>
-                    <CardBody className="h-full flex flex-col">
-                      {tool.logo_url && (
-                        <div className="mb-4 h-16 flex items-center justify-center">
-                          <img
-                            src={tool.logo_url}
-                            alt={tool.name}
-                            className="max-h-full max-w-full object-contain"
-                          />
-                        </div>
-                      )}
+                  <CardBody className="h-full flex flex-col">
+                    {tool.logo_url && (
+                      <div className="mb-4 h-16 flex items-center justify-center">
+                        <img
+                          src={tool.logo_url}
+                          alt={tool.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                    )}
 
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    <Link href={`/tools/${tool.id}`}>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                         {tool.name}
                       </h3>
+                    </Link>
 
-                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 flex-1">
-                        {tool.description}
-                      </p>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 flex-1">
+                      {tool.description}
+                    </p>
 
-                      {tool.category && (
-                        <Badge variant="primary" className="mb-3 inline-block">
-                          {tool.category.name}
-                        </Badge>
-                      )}
+                    {tool.category && (
+                      <Badge variant="primary" className="mb-3 inline-block">
+                        {tool.category.name}
+                      </Badge>
+                    )}
 
-                      {tool.tags && tool.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {tool.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag.id}
-                              className="px-2 py-1 text-xs rounded-full text-white"
-                              style={{ backgroundColor: tag.color }}
-                            >
-                              {tag.name}
-                            </span>
-                          ))}
-                          {tool.tags.length > 3 && (
-                            <span className="px-2 py-1 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
-                              +{tool.tags.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <span>👁️ {tool.views_count} прегледа</span>
-                        {tool.average_rating && (
-                          <span>⭐ {tool.average_rating.toFixed(1)}</span>
+                    {tool.tags && tool.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {tool.tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="px-2 py-1 text-xs rounded-full text-white"
+                            style={{ backgroundColor: tag.color }}
+                          >
+                            {tag.name}
+                          </span>
+                        ))}
+                        {tool.tags.length > 3 && (
+                          <span className="px-2 py-1 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            +{tool.tags.length - 3}
+                          </span>
                         )}
                       </div>
-                    </CardBody>
-                  </Link>
+                    )}
+
+                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500 pt-4 border-t border-gray-200 dark:border-gray-700 mb-4">
+                      <span>👁️ {tool.views_count} прегледа</span>
+                      {tool.average_rating && (
+                        <span>⭐ {tool.average_rating.toFixed(1)}</span>
+                      )}
+                    </div>
+
+                    {/* Visit Website Button */}
+                    {tool.url ? (
+                      <a
+                        href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full px-4 py-2 bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg text-center transform hover:scale-105"
+                      >
+                        🔗 Посети сайта
+                      </a>
+                    ) : (
+                      <button
+                        disabled
+                        className="w-full px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-500 font-semibold rounded-lg cursor-not-allowed text-center"
+                      >
+                        🔗 Няма линк
+                      </button>
+                    )}
+                  </CardBody>
                 </Card>
               ))}
             </div>

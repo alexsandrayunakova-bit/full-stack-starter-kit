@@ -6,6 +6,7 @@ import Link from "next/link";
 import Card, { CardBody, CardHeader } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 import api from "@/lib/api";
@@ -71,8 +72,9 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-100 via-secondary-50 to-accent-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 py-12">
-      <Card className="w-full max-w-md shadow-2xl border-2 border-secondary-200">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-100 via-secondary-50 to-accent-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-md shadow-2xl border-2 border-secondary-200">
         <CardHeader>
           <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-secondary-600 to-primary-600 bg-clip-text text-transparent">
             Регистрация
@@ -160,6 +162,8 @@ export default function Register() {
           </form>
         </CardBody>
       </Card>
+      </div>
+      <Footer />
     </div>
   );
 }

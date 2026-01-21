@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => pathname === path;
@@ -60,6 +62,15 @@ export default function Navbar() {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
+              aria-label="Toggle dark mode"
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
+
             {isAuthenticated && user ? (
               <div className="flex items-center gap-4">
                 <Link
@@ -132,6 +143,14 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Dark Mode Toggle - Mobile */}
+              <button
+                onClick={toggleTheme}
+                className="px-4 py-3 rounded-lg font-medium transition-all text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-left"
+              >
+                {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+              </button>
 
               {isAuthenticated && user ? (
                 <>
