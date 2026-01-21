@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -24,10 +25,12 @@ export default function RootLayout({
   return (
     <html lang="bg" className={inter.variable}>
       <body className="antialiased">
-        <a href="#main-content" className="skip-to-main">
-          Към основното съдържание
-        </a>
-        {children}
+        <Providers>
+          <a href="#main-content" className="skip-to-main">
+            Към основното съдържание
+          </a>
+          {children}
+        </Providers>
       </body>
     </html>
   );
