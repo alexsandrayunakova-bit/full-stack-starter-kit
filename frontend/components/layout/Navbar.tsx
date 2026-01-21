@@ -5,12 +5,15 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   const isActive = (path: string) => pathname === path;
 
@@ -62,6 +65,39 @@ export default function Navbar() {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all font-semibold"
+                aria-label="Change language"
+              >
+                {language.toUpperCase()}
+              </button>
+              {langMenuOpen && (
+                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  <button
+                    onClick={() => { setLanguage("bg"); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "bg" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                  >
+                    🇧🇬 Български
+                  </button>
+                  <button
+                    onClick={() => { setLanguage("en"); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "en" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                  >
+                    🇬🇧 English
+                  </button>
+                  <button
+                    onClick={() => { setLanguage("de"); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "de" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                  >
+                    🇩🇪 Deutsch
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
