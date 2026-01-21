@@ -3,7 +3,7 @@ import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-100 via-secondary-50 to-accent-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <main className="container mx-auto px-4 py-16 text-center flex-1 flex items-center justify-center">
         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-primary-600 via-accent-500 to-secondary-500 bg-clip-text text-transparent animate-gradient">
           AI Tools Platform

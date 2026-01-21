@@ -72,7 +72,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-100 via-secondary-50 to-accent-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <Card className="w-full max-w-md shadow-2xl border-2 border-secondary-200">
         <CardHeader>
@@ -163,7 +163,7 @@ export default function Register() {
         </CardBody>
       </Card>
       </div>
-      <Footer />
+      <Footer simple />
     </div>
   );
 }
