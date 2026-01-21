@@ -15,8 +15,11 @@ export const metadata: Metadata = {
   description: "Платформа за управление и каталогизиране на AI инструменти с филтриране по категории, роли и тагове.",
   keywords: ["AI", "tools", "платформа", "инструменти", "управление"],
   authors: [{ name: "AI Tools Platform Team" }],
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#a855f7",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
