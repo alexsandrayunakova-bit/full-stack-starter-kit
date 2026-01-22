@@ -10,11 +10,13 @@ import SimpleNavbar from "@/components/layout/SimpleNavbar";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Login() {
   const router = useRouter();
   const { login } = useAuth();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,10 +30,10 @@ export default function Login() {
     const result = await login(formData);
 
     if (result.success) {
-      showToast("Успешно влизане!", "success");
+      showToast(t("auth.loginSuccess") || "Login successful!", "success");
       router.push("/dashboard");
     } else {
-      showToast(result.error || "Грешка при вход", "error");
+      showToast(result.error || t("auth.loginError") || "Login error", "error");
     }
 
     setLoading(false);
@@ -44,7 +46,7 @@ export default function Login() {
         <Card className="w-full max-w-md shadow-2xl border-2 border-primary-200">
         <CardHeader>
           <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-            Вход в системата
+            {t("auth.loginTitle")}
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-400 mt-2 font-semibold">
             AI Tools Platform
@@ -55,7 +57,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               type="email"
-              label="Email"
+              label={t("auth.email")}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
@@ -65,7 +67,7 @@ export default function Login() {
 
             <Input
               type="password"
-              label="Парола"
+              label={t("auth.password")}
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
@@ -74,13 +76,13 @@ export default function Login() {
             />
 
             <Button type="submit" fullWidth disabled={loading}>
-              {loading ? "Влизане..." : "Вход"}
+              {loading ? t("auth.loggingIn") : t("auth.login")}
             </Button>
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Нямаш акаунт?{" "}
+              {t("auth.noAccount")}{" "}
               <Link href="/register" className="text-primary-600 hover:text-primary-700 font-medium">
-                Регистрирай се
+                {t("auth.registerLink")}
               </Link>
             </div>
           </form>

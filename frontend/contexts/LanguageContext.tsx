@@ -50,14 +50,23 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.creator": "Alexa Yunakova",
 
     // Auth
+    "auth.loginTitle": "Вход в системата",
     "auth.email": "Email",
     "auth.password": "Парола",
     "auth.name": "Име",
     "auth.role": "Роля",
     "auth.login": "Вход",
+    "auth.loggingIn": "Влизане...",
     "auth.register": "Регистрация",
+    "auth.registering": "Регистриране...",
     "auth.noAccount": "Нямаш акаунт?",
     "auth.hasAccount": "Вече имаш акаунт?",
+    "auth.registerLink": "Регистрирай се",
+    "auth.loginLink": "Влез",
+    "auth.loginSuccess": "Успешно влизане!",
+    "auth.loginError": "Грешка при вход",
+    "auth.registerSuccess": "Успешна регистрация!",
+    "auth.registerError": "Грешка при регистрация",
 
     // Tools
     "tools.search": "Търси инструменти",
@@ -105,14 +114,23 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.creator": "Alexa Yunakova",
 
     // Auth
+    "auth.loginTitle": "Login",
     "auth.email": "Email",
     "auth.password": "Password",
     "auth.name": "Name",
     "auth.role": "Role",
     "auth.login": "Login",
+    "auth.loggingIn": "Logging in...",
     "auth.register": "Register",
+    "auth.registering": "Registering...",
     "auth.noAccount": "Don't have an account?",
     "auth.hasAccount": "Already have an account?",
+    "auth.registerLink": "Sign up",
+    "auth.loginLink": "Log in",
+    "auth.loginSuccess": "Login successful!",
+    "auth.loginError": "Login error",
+    "auth.registerSuccess": "Registration successful!",
+    "auth.registerError": "Registration error",
 
     // Tools
     "tools.search": "Search tools",
@@ -160,14 +178,23 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.creator": "Alexa Yunakova",
 
     // Auth
+    "auth.loginTitle": "Anmelden",
     "auth.email": "E-Mail",
     "auth.password": "Passwort",
     "auth.name": "Name",
     "auth.role": "Rolle",
     "auth.login": "Anmelden",
+    "auth.loggingIn": "Anmelden...",
     "auth.register": "Registrieren",
+    "auth.registering": "Registrierung...",
     "auth.noAccount": "Kein Konto?",
     "auth.hasAccount": "Bereits ein Konto?",
+    "auth.registerLink": "Registrieren",
+    "auth.loginLink": "Anmelden",
+    "auth.loginSuccess": "Anmeldung erfolgreich!",
+    "auth.loginError": "Anmeldefehler",
+    "auth.registerSuccess": "Registrierung erfolgreich!",
+    "auth.registerError": "Registrierungsfehler",
 
     // Tools
     "tools.search": "Werkzeuge suchen",
