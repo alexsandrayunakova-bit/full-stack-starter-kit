@@ -10,6 +10,7 @@ import SimpleNavbar from "@/components/layout/SimpleNavbar";
 import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import api from "@/lib/api";
 import type { Role } from "@/lib/types";
 
@@ -17,6 +18,7 @@ export default function Register() {
   const router = useRouter();
   const { register } = useAuth();
   const { showToast } = useToast();
+  const { t } = useLanguage();
   const [roles, setRoles] = useState<Role[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -24,14 +26,31 @@ export default function Register() {
     password: "",
     password_confirmation: "",
     role_id: "",
+    company: "",
+    date_of_birth: "",
+    country: "",
+    profession: "",
   });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState({
+    minLength: false,
+    maxLength: true,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasDigit: false,
+    noSpecialChars: true,
+  });
 
   useEffect(() => {
     loadRoles();
   }, []);
+
+  useEffect(() => {
+    validatePassword(formData.password);
+  }, [formData.password]);
 
   const loadRoles = async () => {
     const response = await api.get<{ data: Role[] }>("/api/roles");
@@ -44,16 +63,38 @@ export default function Register() {
     }
   };
 
+  const validatePassword = (password: string) => {
+    setPasswordValidation({
+      minLength: password.length >= 8,
+      maxLength: password.length <= 12,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasDigit: /\d/.test(password),
+      noSpecialChars: /^[a-zA-Z0-9]*$/.test(password),
+    });
+  };
+
+  const isPasswordValid = () => {
+    return (
+      passwordValidation.minLength &&
+      passwordValidation.maxLength &&
+      passwordValidation.hasUppercase &&
+      passwordValidation.hasLowercase &&
+      passwordValidation.hasDigit &&
+      passwordValidation.noSpecialChars
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.password_confirmation) {
-      showToast("Паролите не съвпадат", "error");
+      showToast(t("auth.registerError") + ": Passwords do not match", "error");
       return;
     }
 
-    if (formData.password.length < 8) {
-      showToast("Паролата трябва да е поне 8 символа", "error");
+    if (!isPasswordValid()) {
+      showToast(t("auth.registerError") + ": Password requirements not met", "error");
       return;
     }
 
@@ -65,10 +106,10 @@ export default function Register() {
     });
 
     if (result.success) {
-      showToast("Успешна регистрация! Добре дошли!", "success");
+      showToast(t("auth.registerSuccess"), "success");
       router.push("/dashboard");
     } else {
-      showToast(result.error || "Грешка при регистрация", "error");
+      showToast(result.error || t("auth.registerError"), "error");
     }
 
     setLoading(false);
@@ -78,41 +119,87 @@ export default function Register() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <SimpleNavbar />
       <div className="flex-1 flex items-center justify-center px-4 py-12 pt-24">
-        <Card className="w-full max-w-md shadow-2xl border-2 border-secondary-200">
+        <Card className="w-full max-w-2xl shadow-2xl border-2 border-secondary-200">
         <CardHeader>
           <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-secondary-600 to-primary-600 bg-clip-text text-transparent">
-            Регистрация
+            {t("auth.register")}
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-400 mt-2 font-semibold">
-            Създайте нов акаунт в AI Tools Platform
+            Create new account in AI Tools Platform
           </p>
         </CardHeader>
 
         <CardBody>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              type="text"
-              label="Име"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-              fullWidth
-              placeholder="Вашето име"
-            />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Name and Email in 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="text"
+                label={t("auth.name")}
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                fullWidth
+                placeholder={t("auth.name")}
+              />
 
-            <Input
-              type="email"
-              label="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-              fullWidth
-              placeholder="email@example.com"
-            />
+              <Input
+                type="email"
+                label={t("auth.email")}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                fullWidth
+                placeholder="email@example.com"
+              />
+            </div>
 
+            {/* Company and Profession in 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="text"
+                label={t("auth.company")}
+                value={formData.company}
+                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                fullWidth
+                placeholder={t("auth.companyPlaceholder")}
+              />
+
+              <Input
+                type="text"
+                label={t("auth.profession")}
+                value={formData.profession}
+                onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
+                fullWidth
+                placeholder={t("auth.professionPlaceholder")}
+              />
+            </div>
+
+            {/* Date of Birth and Country in 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="date"
+                label={t("auth.dateOfBirth")}
+                value={formData.date_of_birth}
+                onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
+                fullWidth
+                max={new Date().toISOString().split('T')[0]}
+              />
+
+              <Input
+                type="text"
+                label={t("auth.country")}
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                fullWidth
+                placeholder={t("auth.countryPlaceholder")}
+              />
+            </div>
+
+            {/* Role */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Роля <span className="text-red-500">*</span>
+                {t("auth.role")} <span className="text-red-500">*</span>
               </label>
               <select
                 value={formData.role_id}
@@ -126,23 +213,22 @@ export default function Register() {
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Изберете вашата роля в екипа
-              </p>
             </div>
 
-            {/* Password field with toggle visibility */}
-            <div>
+            {/* Password field with toggle visibility and tooltip */}
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Парола
+                {t("auth.password")} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onFocus={() => setShowPasswordTooltip(true)}
+                  onBlur={() => setTimeout(() => setShowPasswordTooltip(false), 200)}
                   required
-                  placeholder="Минимум 8 символа"
+                  placeholder="8-12 characters"
                   className="w-full px-4 py-3 pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
                 <button
@@ -163,12 +249,47 @@ export default function Register() {
                   )}
                 </button>
               </div>
+
+              {/* Password Requirements Tooltip */}
+              {showPasswordTooltip && (
+                <div className="absolute z-10 mt-2 p-4 bg-white dark:bg-gray-800 border-2 border-primary-500 rounded-lg shadow-xl w-full">
+                  <p className="font-semibold text-gray-900 dark:text-white mb-2">
+                    {t("auth.passwordRequirements")}
+                  </p>
+                  <ul className="space-y-1 text-sm">
+                    <li className={`flex items-center ${passwordValidation.minLength ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className="mr-2">{passwordValidation.minLength ? '✓' : '○'}</span>
+                      {t("auth.passwordMin")}
+                    </li>
+                    <li className={`flex items-center ${passwordValidation.maxLength ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                      <span className="mr-2">{passwordValidation.maxLength ? '✓' : '✗'}</span>
+                      {t("auth.passwordMax")}
+                    </li>
+                    <li className={`flex items-center ${passwordValidation.hasUppercase ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className="mr-2">{passwordValidation.hasUppercase ? '✓' : '○'}</span>
+                      {t("auth.passwordUppercase")}
+                    </li>
+                    <li className={`flex items-center ${passwordValidation.hasLowercase ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className="mr-2">{passwordValidation.hasLowercase ? '✓' : '○'}</span>
+                      {t("auth.passwordLowercase")}
+                    </li>
+                    <li className={`flex items-center ${passwordValidation.hasDigit ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                      <span className="mr-2">{passwordValidation.hasDigit ? '✓' : '○'}</span>
+                      {t("auth.passwordDigit")}
+                    </li>
+                    <li className={`flex items-center ${passwordValidation.noSpecialChars ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                      <span className="mr-2">{passwordValidation.noSpecialChars ? '✓' : '✗'}</span>
+                      {t("auth.passwordNoSpecial")}
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
 
             {/* Password confirmation field with toggle visibility */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Потвърди парола
+                {t("auth.passwordConfirm")} <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -176,7 +297,7 @@ export default function Register() {
                   value={formData.password_confirmation}
                   onChange={(e) => setFormData({ ...formData, password_confirmation: e.target.value })}
                   required
-                  placeholder="Въведете паролата отново"
+                  placeholder={t("auth.passwordConfirmPlaceholder")}
                   className="w-full px-4 py-3 pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                 />
                 <button
@@ -199,14 +320,14 @@ export default function Register() {
               </div>
             </div>
 
-            <Button type="submit" fullWidth disabled={loading}>
-              {loading ? "Регистриране..." : "Регистрирай се"}
+            <Button type="submit" fullWidth disabled={loading || !isPasswordValid()}>
+              {loading ? t("auth.registering") : t("auth.register")}
             </Button>
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Вече имаш акаунт?{" "}
+              {t("auth.hasAccount")}{" "}
               <Link href="/login" className="text-primary-600 hover:text-primary-700 font-medium">
-                Влез
+                {t("auth.loginLink")}
               </Link>
             </div>
           </form>

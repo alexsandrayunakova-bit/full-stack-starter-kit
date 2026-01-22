@@ -53,8 +53,19 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:12',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,12}$/', // At least 1 lowercase, 1 uppercase, 1 digit, no special chars
+            ],
             'role_id' => 'required|exists:roles,id',
+            'company' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date|before:today',
+            'country' => 'nullable|string|max:255',
+            'profession' => 'nullable|string|max:255',
         ]);
 
         $user = User::create([
@@ -62,6 +73,10 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
+            'company' => $request->company,
+            'date_of_birth' => $request->date_of_birth,
+            'country' => $request->country,
+            'profession' => $request->profession,
         ]);
 
         $token = $user->createToken('auth-token')->plainTextToken;
