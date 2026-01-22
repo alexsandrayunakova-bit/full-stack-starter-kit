@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SimpleNavbar from "@/components/layout/SimpleNavbar";
 import Footer from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -9,6 +10,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <SimpleNavbar />
       <main className="container mx-auto px-4 py-16 text-center flex-1 flex flex-col items-center justify-center">
         <h1 className="text-6xl md:text-8xl font-extrabold mb-12 bg-gradient-to-r from-primary-600 via-accent-500 to-secondary-500 bg-clip-text text-transparent">
           {t("home.title")}
