@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import SkipLink from "@/components/layout/SkipLink";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -11,9 +12,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AI Tools Platform - Управление на AI инструменти",
-  description: "Платформа за управление и каталогизиране на AI инструменти с филтриране по категории, роли и тагове.",
-  keywords: ["AI", "tools", "платформа", "инструменти", "управление"],
+  title: "AI Tools Platform - AI Tools Management",
+  description: "Platform for managing and cataloging AI tools with filtering by categories, roles, and tags.",
+  keywords: ["AI", "tools", "platform", "management", "catalog"],
   authors: [{ name: "AI Tools Platform Team" }],
 };
 
@@ -28,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bg" className={poppins.variable} suppressHydrationWarning>
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -47,9 +48,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-sans">
         <Providers>
-          <a href="#main-content" className="skip-to-main">
-            Към основното съдържание
-          </a>
+          <SkipLink />
           {children}
         </Providers>
       </body>

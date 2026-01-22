@@ -15,13 +15,16 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // Translations
 const translations: Record<Language, Record<string, string>> = {
   bg: {
+    // General
+    "skipToMain": "Към основното съдържание",
+
     // Navbar
-    "nav.dashboard": "Dashboard",
-    "nav.tools": "Инструменти",
-    "nav.addTool": "Добави инструмент",
-    "nav.profile": "Профил",
-    "nav.logout": "Изход",
-    "nav.login": "Вход",
+    "navbar.dashboard": "Dashboard",
+    "navbar.tools": "Инструменти",
+    "navbar.addTool": "Добави инструмент",
+    "navbar.profile": "Профил",
+    "navbar.logout": "Изход",
+    "navbar.login": "Вход",
 
     // Home
     "home.title": "AI Tools Platform",
@@ -42,6 +45,7 @@ const translations: Record<Language, Record<string, string>> = {
     "dashboard.viewAll": "Виж всички",
 
     // Footer
+    "footer.copyright": "© 2026 AI Tools Platform. Всички права запазени.",
     "footer.rights": "Всички права запазени",
     "footer.creator": "Alexa Yunakova",
 
@@ -66,13 +70,16 @@ const translations: Record<Language, Record<string, string>> = {
     "tools.viewsCount": "прегледа",
   },
   en: {
+    // General
+    "skipToMain": "Skip to main content",
+
     // Navbar
-    "nav.dashboard": "Dashboard",
-    "nav.tools": "Tools",
-    "nav.addTool": "Add Tool",
-    "nav.profile": "Profile",
-    "nav.logout": "Logout",
-    "nav.login": "Login",
+    "navbar.dashboard": "Dashboard",
+    "navbar.tools": "Tools",
+    "navbar.addTool": "Add Tool",
+    "navbar.profile": "Profile",
+    "navbar.logout": "Logout",
+    "navbar.login": "Login",
 
     // Home
     "home.title": "AI Tools Platform",
@@ -93,6 +100,7 @@ const translations: Record<Language, Record<string, string>> = {
     "dashboard.viewAll": "View All",
 
     // Footer
+    "footer.copyright": "© 2026 AI Tools Platform. All rights reserved.",
     "footer.rights": "All rights reserved",
     "footer.creator": "Alexa Yunakova",
 
@@ -117,13 +125,16 @@ const translations: Record<Language, Record<string, string>> = {
     "tools.viewsCount": "views",
   },
   de: {
+    // General
+    "skipToMain": "Zum Hauptinhalt springen",
+
     // Navbar
-    "nav.dashboard": "Dashboard",
-    "nav.tools": "Werkzeuge",
-    "nav.addTool": "Tool hinzufügen",
-    "nav.profile": "Profil",
-    "nav.logout": "Abmelden",
-    "nav.login": "Anmelden",
+    "navbar.dashboard": "Dashboard",
+    "navbar.tools": "Werkzeuge",
+    "navbar.addTool": "Tool hinzufügen",
+    "navbar.profile": "Profil",
+    "navbar.logout": "Abmelden",
+    "navbar.login": "Anmelden",
 
     // Home
     "home.title": "AI Tools Platform",
@@ -144,6 +155,7 @@ const translations: Record<Language, Record<string, string>> = {
     "dashboard.viewAll": "Alle anzeigen",
 
     // Footer
+    "footer.copyright": "© 2026 AI Tools Platform. Alle Rechte vorbehalten.",
     "footer.rights": "Alle Rechte vorbehalten",
     "footer.creator": "Alexa Yunakova",
 

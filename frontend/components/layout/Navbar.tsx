@@ -17,15 +17,15 @@ export default function Navbar() {
 
   const isActive = (path: string) => pathname === path;
 
-  // Навигационни линкове според ролята
+  // Navigation links based on role
   const getNavLinks = () => {
     const baseLinks = [
-      { href: "/dashboard", label: "Dashboard", icon: "📊" },
-      { href: "/tools", label: "Инструменти", icon: "🛠️" },
+      { href: "/dashboard", label: t("navbar.dashboard"), icon: "📊" },
+      { href: "/tools", label: t("navbar.tools"), icon: "🛠️" },
     ];
 
     if (isAuthenticated) {
-      baseLinks.push({ href: "/tools/new", label: "Добави тул", icon: "➕" });
+      baseLinks.push({ href: "/tools/new", label: t("navbar.addTool"), icon: "➕" });
     }
 
     return baseLinks;
@@ -129,7 +129,7 @@ export default function Navbar() {
                   onClick={() => logout()}
                   className="px-4 py-2 text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-gray-700 rounded-lg transition-all font-semibold"
                 >
-                  Изход
+                  {t("navbar.logout")}
                 </button>
               </div>
             ) : (
@@ -137,7 +137,7 @@ export default function Navbar() {
                 href="/login"
                 className="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg"
               >
-                Вход
+                {t("navbar.login")}
               </Link>
             )}
           </div>
@@ -201,7 +201,7 @@ export default function Navbar() {
                       }
                     `}
                   >
-                    👤 Профил ({user.name || user.email})
+                    👤 {t("navbar.profile")} ({user.name || user.email})
                   </Link>
                   <button
                     onClick={() => {
@@ -210,7 +210,7 @@ export default function Navbar() {
                     }}
                     className="px-4 py-3 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
                   >
-                    🚪 Изход
+                    🚪 {t("navbar.logout")}
                   </button>
                 </>
               ) : (
@@ -219,7 +219,7 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg text-center"
                 >
-                  Вход
+                  {t("navbar.login")}
                 </Link>
               )}
             </div>
