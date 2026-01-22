@@ -210,27 +210,19 @@ const translations: Record<Language, Record<string, string>> = {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en");
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Force reset to clear any cached state
     const savedLang = localStorage.getItem("language") as Language;
-    console.log("LanguageContext - Saved language from localStorage:", savedLang);
 
-    // Always start fresh - if no saved language or invalid, use English
     if (!savedLang || !["bg", "en", "de"].includes(savedLang)) {
-      console.log("LanguageContext - No valid saved language, defaulting to English");
       setLanguageState("en");
       localStorage.setItem("language", "en");
     } else {
-      console.log("LanguageContext - Using saved language:", savedLang);
       setLanguageState(savedLang);
     }
-    setIsInitialized(true);
   }, []);
 
   const setLanguage = (lang: Language) => {
-    console.log("LanguageContext - Changing language to:", lang);
     setLanguageState(lang);
     localStorage.setItem("language", lang);
   };
