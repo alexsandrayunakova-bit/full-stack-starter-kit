@@ -56,81 +56,81 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-accent-600 via-primary-600 to-secondary-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-2">
             🛡️ Admin Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg font-semibold">
+          <p className="text-slate-600 dark:text-slate-400 text-lg">
             Manage tools, users, and view system statistics
           </p>
         </div>
 
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all hover:border-slate-300 dark:hover:border-slate-600">
             <CardBody className="text-center py-8">
-              <div className="text-6xl font-extrabold mb-2">{stats?.total_tools || 0}</div>
-              <div className="text-primary-100 font-bold text-lg">Total Tools</div>
+              <div className="text-6xl font-extrabold mb-2 text-slate-700 dark:text-slate-200">{stats?.total_tools || 0}</div>
+              <div className="text-slate-600 dark:text-slate-400 font-semibold text-lg">Total Tools</div>
             </CardBody>
           </Card>
 
-          <Card className="bg-gradient-to-br from-secondary-500 to-secondary-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all hover:border-slate-300 dark:hover:border-slate-600">
             <CardBody className="text-center py-8">
-              <div className="text-6xl font-extrabold mb-2">{stats?.pending_tools || 0}</div>
-              <div className="text-secondary-100 font-bold text-lg">Pending Approval</div>
+              <div className="text-6xl font-extrabold mb-2 text-slate-700 dark:text-slate-200">{stats?.pending_tools || 0}</div>
+              <div className="text-slate-600 dark:text-slate-400 font-semibold text-lg">Pending Approval</div>
             </CardBody>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500 to-green-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all hover:border-slate-300 dark:hover:border-slate-600">
             <CardBody className="text-center py-8">
-              <div className="text-6xl font-extrabold mb-2">{stats?.active_tools || 0}</div>
-              <div className="text-green-100 font-bold text-lg">Active Tools</div>
+              <div className="text-6xl font-extrabold mb-2 text-slate-700 dark:text-slate-200">{stats?.active_tools || 0}</div>
+              <div className="text-slate-600 dark:text-slate-400 font-semibold text-lg">Active Tools</div>
             </CardBody>
           </Card>
 
-          <Card className="bg-gradient-to-br from-info-500 to-info-700 text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all hover:border-slate-300 dark:hover:border-slate-600">
             <CardBody className="text-center py-8">
-              <div className="text-6xl font-extrabold mb-2">{stats?.total_users || 0}</div>
-              <div className="text-info-100 font-bold text-lg">Total Users</div>
+              <div className="text-6xl font-extrabold mb-2 text-slate-700 dark:text-slate-200">{stats?.total_users || 0}</div>
+              <div className="text-slate-600 dark:text-slate-400 font-semibold text-lg">Total Users</div>
             </CardBody>
           </Card>
         </div>
 
         {/* Quick Actions */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
           <CardHeader>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Quick Actions</h2>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Quick Actions</h2>
           </CardHeader>
           <CardBody>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link
                 href="/admin/tools"
-                className="p-6 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-all border-2 border-primary-200 dark:border-primary-800 text-center group"
+                className="p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/70 rounded-lg transition-all border-2 border-blue-400 dark:border-blue-500 text-center group"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🛠️</div>
-                <div className="font-semibold text-gray-900 dark:text-white">Manage Tools</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <div className="font-semibold text-slate-800 dark:text-slate-100">Manage Tools</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                   Approve, reject, or delete tools
                 </div>
               </Link>
 
               <Link
                 href="/admin/users"
-                className="p-6 bg-secondary-50 dark:bg-secondary-900/20 hover:bg-secondary-100 dark:hover:bg-secondary-900/30 rounded-lg transition-all border-2 border-secondary-200 dark:border-secondary-800 text-center group"
+                className="p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/70 rounded-lg transition-all border-2 border-purple-400 dark:border-purple-500 text-center group"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">👥</div>
-                <div className="font-semibold text-gray-900 dark:text-white">Manage Users</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <div className="font-semibold text-slate-800 dark:text-slate-100">Manage Users</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                   View and manage user accounts
                 </div>
               </Link>
 
               <Link
                 href="/admin/audit-logs"
-                className="p-6 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-all border-2 border-green-200 dark:border-green-800 text-center group"
+                className="p-6 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900/70 rounded-lg transition-all border-2 border-emerald-400 dark:border-emerald-500 text-center group"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📋</div>
-                <div className="font-semibold text-gray-900 dark:text-white">Audit Logs</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <div className="font-semibold text-slate-800 dark:text-slate-100">Audit Logs</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                   View system activity history
                 </div>
               </Link>
@@ -140,41 +140,37 @@ export default function AdminDashboard() {
 
         {/* Tools by Category */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tools by Category</h2>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Tools by Category</h2>
             </CardHeader>
             <CardBody>
               {stats?.tools_by_category.map((item) => (
-                <div key={item.category_id} className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div key={item.category_id} className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700 last:border-0">
+                  <span className="font-medium text-slate-800 dark:text-slate-100">
                     {item.category?.name}
                   </span>
-                  <Badge variant="primary">{item.count}</Badge>
+                  <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm">
+                    {item.count}
+                  </span>
                 </div>
               ))}
             </CardBody>
           </Card>
 
-          <Card>
+          <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Tools by Status</h2>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Tools by Status</h2>
             </CardHeader>
             <CardBody>
               {stats?.tools_by_status.map((item) => (
-                <div key={item.status} className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0">
-                  <span className="font-medium text-gray-900 dark:text-white capitalize">
+                <div key={item.status} className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700 last:border-0">
+                  <span className="font-medium text-slate-800 dark:text-slate-100 capitalize">
                     {item.status}
                   </span>
-                  <Badge
-                    variant={
-                      item.status === 'active' ? 'success' :
-                      item.status === 'pending' ? 'warning' :
-                      'secondary'
-                    }
-                  >
+                  <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm">
                     {item.count}
-                  </Badge>
+                  </span>
                 </div>
               ))}
             </CardBody>

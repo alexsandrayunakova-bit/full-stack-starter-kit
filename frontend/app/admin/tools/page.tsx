@@ -124,10 +124,10 @@ export default function AdminToolsManagement() {
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary-600 via-secondary-600 to-accent-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-extrabold text-slate-800 dark:text-slate-100 mb-2">
               🛠️ Tools Management
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-slate-600 dark:text-slate-400">
               Approve, reject, or delete AI tools
             </p>
           </div>
@@ -137,18 +137,18 @@ export default function AdminToolsManagement() {
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
+        <Card className="mb-6 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
           <CardBody>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Status Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   Status
                 </label>
                 <select
                   value={filters.status || ''}
                   onChange={(e) => handleFilterChange('status', e.target.value || undefined)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400"
                 >
                   <option value="">All Statuses</option>
                   <option value="pending">Pending</option>
@@ -159,13 +159,13 @@ export default function AdminToolsManagement() {
 
               {/* Category Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   Category
                 </label>
                 <select
                   value={filters.category_id || ''}
                   onChange={(e) => handleFilterChange('category_id', e.target.value ? Number(e.target.value) : undefined)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400"
                 >
                   <option value="">All Categories</option>
                   {categories.map((cat) => (
@@ -176,7 +176,7 @@ export default function AdminToolsManagement() {
 
               {/* Search */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   Search
                 </label>
                 <input
@@ -184,7 +184,7 @@ export default function AdminToolsManagement() {
                   value={filters.search || ''}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                   placeholder="Search by name..."
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400"
                 />
               </div>
             </div>
@@ -192,9 +192,9 @@ export default function AdminToolsManagement() {
         </Card>
 
         {/* Tools List */}
-        <Card>
+        <Card className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
           <CardHeader>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
               Tools ({tools.length})
             </h2>
           </CardHeader>
@@ -202,35 +202,35 @@ export default function AdminToolsManagement() {
             {tools.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">📭</div>
-                <p className="text-gray-500 dark:text-gray-400 text-lg">No tools found</p>
+                <p className="text-slate-500 dark:text-slate-400 text-lg">No tools found</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {tools.map((tool) => (
                   <div
                     key={tool.id}
-                    className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    className="p-4 border-2 border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                             {tool.name}
                           </h3>
-                          <Badge
-                            variant={
-                              tool.status === 'active' ? 'primary' :
-                              tool.status === 'pending' ? 'secondary' :
-                              'default'
-                            }
-                          >
+                          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            tool.status === 'active'
+                              ? 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                              : tool.status === 'pending'
+                              ? 'bg-slate-300 dark:bg-slate-600 text-slate-800 dark:text-slate-200'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                          }`}>
                             {tool.status}
-                          </Badge>
+                          </span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
                           {tool.description}
                         </p>
-                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
+                        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
                           <span>Category: {tool.category?.name}</span>
                           <span>Created by: {tool.creator?.name}</span>
                           <span>Views: {tool.views_count}</span>
@@ -243,15 +243,14 @@ export default function AdminToolsManagement() {
                           <>
                             <Button
                               onClick={() => handleApproveTool(tool.id)}
-                              variant="primary"
-                              className="text-sm"
+                              className="text-sm bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white"
                             >
                               ✓ Approve
                             </Button>
                             <Button
                               onClick={() => handleRejectTool(tool.id)}
                               variant="secondary"
-                              className="text-sm"
+                              className="text-sm border-2 border-slate-300 dark:border-slate-600"
                             >
                               ✗ Reject
                             </Button>
@@ -261,14 +260,14 @@ export default function AdminToolsManagement() {
                           <Button
                             onClick={() => handleRejectTool(tool.id)}
                             variant="secondary"
-                            className="text-sm"
+                            className="text-sm border-2 border-slate-300 dark:border-slate-600"
                           >
                             Archive
                           </Button>
                         )}
                         <Button
                           onClick={() => handleDeleteTool(tool.id, tool.name)}
-                          className="text-sm bg-red-600 hover:bg-red-700"
+                          className="text-sm bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white border-2 border-red-400 dark:border-red-500"
                         >
                           🗑️ Delete
                         </Button>
@@ -286,16 +285,18 @@ export default function AdminToolsManagement() {
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
                   variant="secondary"
+                  className="border-2 border-slate-300 dark:border-slate-600"
                 >
                   Previous
                 </Button>
-                <span className="px-4 py-2 text-gray-700 dark:text-gray-300">
+                <span className="px-4 py-2 text-slate-700 dark:text-slate-300 font-semibold">
                   Page {currentPage} of {totalPages}
                 </span>
                 <Button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
                   variant="secondary"
+                  className="border-2 border-slate-300 dark:border-slate-600"
                 >
                   Next
                 </Button>
