@@ -17,6 +17,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is owner
@@ -32,13 +33,17 @@ export default function AdminDashboard() {
 
   const loadStats = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await adminApi.getStats();
       if (response.data) {
         setStats(response.data);
+      } else if (response.error) {
+        setError(response.error);
       }
     } catch (error) {
       console.error("Failed to load admin stats:", error);
+      setError(error instanceof Error ? error.message : "Failed to connect to backend");
     }
     setLoading(false);
   };
@@ -62,7 +67,33 @@ export default function AdminDashboard() {
           <p className="text-slate-600 dark:text-slate-400 text-lg">
             Manage tools, users, and view system statistics
           </p>
+          {process.env.NODE_ENV === 'development' && (
+            <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
+              API: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8201'}
+            </p>
+          )}
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-500 rounded-lg">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div className="flex-1">
+                <h3 className="font-bold text-red-800 dark:text-red-200 mb-1">
+                  Failed to load dashboard statistics
+                </h3>
+                <p className="text-red-700 dark:text-red-300 text-sm mb-2">{error}</p>
+                <button
+                  onClick={loadStats}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-colors"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

@@ -53,8 +53,16 @@ services:
         fi &&
         echo '🗄️ Running migrations...' &&
         php artisan migrate --force &&
+        echo '📊 Running database seeders...' &&
+        php artisan db:seed --force --class=RoleSeeder || echo '⚠️ Seeder already ran or not found' &&
+        echo '🔍 Clearing caches...' &&
+        php artisan config:clear &&
+        php artisan route:clear &&
+        php artisan cache:clear &&
         echo '================================================' &&
         echo '✅ Backend server starting on http://localhost:8001' &&
+        echo '✅ API Routes: http://localhost:8001/api/*' &&
+        echo '✅ Admin Routes: http://localhost:8001/api/admin/*' &&
         echo '================================================' &&
         php artisan serve --host=0.0.0.0 --port=8001
       "
@@ -78,10 +86,8 @@ services:
       - WATCHPACK_POLLING=true
     command: >
       sh -c "
-        if [ ! -f .env.local ]; then
-          echo 'NEXT_PUBLIC_API_URL=http://localhost:8001' > .env.local &&
-          echo 'Created .env.local file'
-        fi &&
+        echo 'NEXT_PUBLIC_API_URL=http://localhost:8001' > .env.local &&
+        echo '✅ Created/updated .env.local with correct API URL' &&
         echo 'Installing npm dependencies...' &&
         npm install --silent &&
         echo '================================================' &&
