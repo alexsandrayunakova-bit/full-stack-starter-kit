@@ -28,7 +28,7 @@ services:
       bash -c "
         echo '🔧 Installing system packages...' &&
         apt-get update -qq &&
-        apt-get install -y -qq git unzip libzip-dev sqlite3 curl &&
+        apt-get install -y -qq git unzip libzip-dev sqlite3 libsqlite3-dev curl &&
         echo '🔧 Installing PHP extensions...' &&
         docker-php-ext-install zip pdo pdo_sqlite &&
         echo '🔧 Installing Composer...' &&
