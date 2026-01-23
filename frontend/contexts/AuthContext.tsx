@@ -33,10 +33,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const response = await api.get<User>("/api/me");
+    const response = await api.get<{ user: User }>("/api/me");
 
-    if (response.data) {
-      setUser(response.data);
+    if (response.data && response.data.user) {
+      setUser(response.data.user);
     } else {
       localStorage.removeItem("token");
     }
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await api.post("/api/logout", {});
     localStorage.removeItem("token");
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
   return (

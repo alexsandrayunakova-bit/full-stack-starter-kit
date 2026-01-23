@@ -25,6 +25,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'company',
+        'date_of_birth',
+        'country',
+        'profession',
     ];
 
     /**
@@ -47,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
         ];
     }
     /**
@@ -87,5 +92,21 @@ class User extends Authenticatable
     public function isOwner(): bool
     {
         return $this->hasRole('owner');
+    }
+
+    /**
+     * Get user's login history
+     */
+    public function loginHistory(): HasMany
+    {
+        return $this->hasMany(UserLoginHistory::class);
+    }
+
+    /**
+     * Get user's latest login
+     */
+    public function latestLogin()
+    {
+        return $this->hasOne(UserLoginHistory::class)->latestOfMany('login_at');
     }
 }

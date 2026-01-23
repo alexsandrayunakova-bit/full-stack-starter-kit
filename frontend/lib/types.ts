@@ -82,6 +82,10 @@ export interface RegisterData {
   password: string;
   password_confirmation: string;
   role_id: number;
+  company?: string;
+  date_of_birth?: string;
+  country?: string;
+  profession?: string;
 }
 
 export interface AuthResponse {
