@@ -28,6 +28,9 @@ class AuthController extends Controller
             ]);
         }
 
+        // Log the login
+        $this->logUserLogin($user, $request);
+
         // Delete old tokens
         $user->tokens()->delete();
 
@@ -119,5 +122,70 @@ class AuthController extends Controller
                 'role' => $user->role,
             ],
         ]);
+    }
+
+    /**
+     * Log user login
+     */
+    private function logUserLogin(User $user, Request $request)
+    {
+        $userAgent = $request->userAgent();
+
+        \App\Models\UserLoginHistory::create([
+            'user_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'user_agent' => $userAgent,
+            'device_type' => $this->detectDeviceType($userAgent),
+            'browser' => $this->detectBrowser($userAgent),
+            'platform' => $this->detectPlatform($userAgent),
+            'login_at' => now(),
+        ]);
+    }
+
+    /**
+     * Detect device type from user agent
+     */
+    private function detectDeviceType(?string $userAgent): string
+    {
+        if (!$userAgent) return 'unknown';
+
+        if (preg_match('/mobile|android|iphone|ipod|blackberry|iemobile|opera mini/i', $userAgent)) {
+            return 'mobile';
+        } elseif (preg_match('/tablet|ipad/i', $userAgent)) {
+            return 'tablet';
+        }
+        return 'desktop';
+    }
+
+    /**
+     * Detect browser from user agent
+     */
+    private function detectBrowser(?string $userAgent): string
+    {
+        if (!$userAgent) return 'unknown';
+
+        if (preg_match('/Edge/i', $userAgent)) return 'Edge';
+        if (preg_match('/Chrome/i', $userAgent)) return 'Chrome';
+        if (preg_match('/Safari/i', $userAgent)) return 'Safari';
+        if (preg_match('/Firefox/i', $userAgent)) return 'Firefox';
+        if (preg_match('/MSIE|Trident/i', $userAgent)) return 'Internet Explorer';
+
+        return 'unknown';
+    }
+
+    /**
+     * Detect platform from user agent
+     */
+    private function detectPlatform(?string $userAgent): string
+    {
+        if (!$userAgent) return 'unknown';
+
+        if (preg_match('/Windows/i', $userAgent)) return 'Windows';
+        if (preg_match('/Mac OS X/i', $userAgent)) return 'macOS';
+        if (preg_match('/Linux/i', $userAgent)) return 'Linux';
+        if (preg_match('/Android/i', $userAgent)) return 'Android';
+        if (preg_match('/iOS|iPhone|iPad/i', $userAgent)) return 'iOS';
+
+        return 'unknown';
     }
 }

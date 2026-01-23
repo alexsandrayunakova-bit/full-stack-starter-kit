@@ -144,7 +144,7 @@ class AdminController extends Controller
      */
     public function getUsers(Request $request)
     {
-        $query = User::with('role');
+        $query = User::with(['role', 'latestLogin']);
 
         // Filter by role
         if ($request->has('role_id')) {
@@ -162,6 +162,122 @@ class AdminController extends Controller
         $users = $query->paginate($request->get('per_page', 20));
 
         return response()->json($users);
+    }
+
+    /**
+     * Get single user details with login history and activity
+     */
+    public function getUserDetails($id)
+    {
+        $user = User::with(['role', 'aiTools', 'recommendations'])
+            ->withCount('aiTools')
+            ->findOrFail($id);
+
+        // Get login history
+        $loginHistory = \App\Models\UserLoginHistory::where('user_id', $id)
+            ->orderBy('login_at', 'desc')
+            ->take(50)
+            ->get();
+
+        // Get tools used (via recommendations)
+        $toolsUsed = \App\Models\ToolRecommendation::where('user_id', $id)
+            ->with('tool')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Get audit logs for this user
+        $auditLogs = DB::table('audit_logs')
+            ->where('user_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->take(50)
+            ->get();
+
+        return response()->json([
+            'user' => $user,
+            'login_history' => $loginHistory,
+            'tools_used' => $toolsUsed,
+            'audit_logs' => $auditLogs,
+            'stats' => [
+                'total_logins' => \App\Models\UserLoginHistory::where('user_id', $id)->count(),
+                'tools_created' => $user->ai_tools_count,
+                'tools_recommended' => $toolsUsed->count(),
+            ],
+        ]);
+    }
+
+    /**
+     * Update user information (only owner and project manager can edit)
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $currentUser = auth()->user();
+
+        // Check if user has permission to edit
+        if (!in_array($currentUser->role->name, ['owner', 'project_manager'])) {
+            return response()->json([
+                'error' => 'Unauthorized. Only owners and project managers can edit user information.'
+            ], 403);
+        }
+
+        $user = User::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'company' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date|before:today',
+            'country' => 'nullable|string|max:255',
+            'profession' => 'nullable|string|max:255',
+            'role_id' => 'sometimes|exists:roles,id',
+        ]);
+
+        $user->update($validatedData);
+
+        // Log activity
+        $this->logActivity('updated_user', null, [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'fields_updated' => array_keys($validatedData),
+        ]);
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'user' => $user->load('role'),
+        ]);
+    }
+
+    /**
+     * Get audit logs with user information
+     */
+    public function getAuditLogs(Request $request)
+    {
+        $query = DB::table('audit_logs')
+            ->join('users', 'audit_logs.user_id', '=', 'users.id')
+            ->select('audit_logs.*', 'users.name as user_name', 'users.email as user_email');
+
+        // Filter by user
+        if ($request->has('user_id')) {
+            $query->where('audit_logs.user_id', $request->user_id);
+        }
+
+        // Filter by action
+        if ($request->has('action')) {
+            $query->where('audit_logs.action', $request->action);
+        }
+
+        // Date range
+        if ($request->has('from_date')) {
+            $query->where('audit_logs.created_at', '>=', $request->from_date);
+        }
+
+        if ($request->has('to_date')) {
+            $query->where('audit_logs.created_at', '<=', $request->to_date);
+        }
+
+        $logs = $query->orderBy('audit_logs.created_at', 'desc')
+            ->paginate($request->get('per_page', 50));
+
+        return response()->json($logs);
     }
 
     /**

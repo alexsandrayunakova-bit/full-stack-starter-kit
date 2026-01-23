@@ -93,4 +93,20 @@ class User extends Authenticatable
     {
         return $this->hasRole('owner');
     }
+
+    /**
+     * Get user's login history
+     */
+    public function loginHistory(): HasMany
+    {
+        return $this->hasMany(UserLoginHistory::class);
+    }
+
+    /**
+     * Get user's latest login
+     */
+    public function latestLogin()
+    {
+        return $this->hasOne(UserLoginHistory::class)->latestOfMany('login_at');
+    }
 }

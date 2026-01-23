@@ -76,15 +76,9 @@ Route::middleware(['auth:sanctum', 'role:owner'])->prefix('admin')->group(functi
 
     // Users management
     Route::get('/users', [AdminController::class, 'getUsers']);
+    Route::get('/users/{id}', [AdminController::class, 'getUserDetails']);
+    Route::put('/users/{id}', [AdminController::class, 'updateUser']);
 
     // Audit logs
-    Route::get('/audit-logs', function (Request $request) {
-        $logs = DB::table('audit_logs')
-            ->join('users', 'audit_logs.user_id', '=', 'users.id')
-            ->select('audit_logs.*', 'users.name as user_name', 'users.email as user_email')
-            ->orderBy('audit_logs.created_at', 'desc')
-            ->paginate($request->get('per_page', 50));
-
-        return response()->json($logs);
-    });
+    Route::get('/audit-logs', [AdminController::class, 'getAuditLogs']);
 });

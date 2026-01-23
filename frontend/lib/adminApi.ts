@@ -88,9 +88,37 @@ export const adminApi = {
   },
 
   /**
-   * Get audit logs
+   * Get single user details with login history and activity
    */
-  async getAuditLogs(page: number = 1, per_page: number = 50) {
-    return api.get(`/api/admin/audit-logs?page=${page}&per_page=${per_page}`);
+  async getUserDetails(userId: number) {
+    return api.get(`/api/admin/users/${userId}`);
+  },
+
+  /**
+   * Update user information
+   */
+  async updateUser(userId: number, data: any) {
+    return api.put(`/api/admin/users/${userId}`, data);
+  },
+
+  /**
+   * Get audit logs with filters
+   */
+  async getAuditLogs(filters: {
+    user_id?: number;
+    action?: string;
+    from_date?: string;
+    to_date?: string;
+    per_page?: number;
+    page?: number;
+  } = {}) {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+
+    return api.get(`/api/admin/audit-logs?${params.toString()}`);
   },
 };
