@@ -26,13 +26,17 @@ services:
       - APP_URL=http://localhost:8001
     command: >
       bash -c "
+        echo '🔧 Installing system packages...' &&
         apt-get update -qq &&
-        apt-get install -y -qq git unzip libzip-dev sqlite3 curl > /dev/null 2>&1 &&
-        docker-php-ext-install zip pdo pdo_sqlite > /dev/null 2>&1 &&
+        apt-get install -y -qq git unzip libzip-dev sqlite3 curl &&
+        echo '🔧 Installing PHP extensions...' &&
+        docker-php-ext-install zip pdo pdo_sqlite &&
+        echo '🔧 Installing Composer...' &&
         if [ ! -f /usr/local/bin/composer ]; then
           curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
         fi &&
         cd /var/www/backend &&
+        echo '🔧 Setting up environment...' &&
         if [ ! -f .env ]; then
           cp .env.example .env &&
           echo 'Created .env file'
@@ -41,13 +45,13 @@ services:
           touch database/database.sqlite &&
           echo 'Created SQLite database'
         fi &&
-        echo 'Installing Composer dependencies...' &&
-        composer install --no-interaction --quiet &&
+        echo '📦 Installing Composer dependencies...' &&
+        composer install --no-interaction &&
         if ! grep -q 'APP_KEY=base64:' .env; then
           php artisan key:generate &&
           echo 'Generated application key'
         fi &&
-        echo 'Running migrations...' &&
+        echo '🗄️ Running migrations...' &&
         php artisan migrate --force &&
         echo '================================================' &&
         echo '✅ Backend server starting on http://localhost:8001' &&
