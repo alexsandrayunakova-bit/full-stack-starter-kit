@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AiToolController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ToolRecommendationController;
+use App\Http\Controllers\Api\TwoFactorController;
 use App\Http\Controllers\AdminController;
 
 /*
@@ -27,6 +28,10 @@ Route::get('/status', function () {
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+// 2FA public routes (for login verification)
+Route::post('/2fa/verify-login', [TwoFactorController::class, 'verifyLogin']);
+Route::post('/2fa/send-login-code', [TwoFactorController::class, 'sendLoginCode']);
 
 // Public - Get tags (no auth required)
 Route::get('/tags', [App\Http\Controllers\Api\TagController::class, 'index']);
@@ -50,7 +55,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
-    
+
+    // 2FA management (authenticated)
+    Route::get('/2fa/status', [TwoFactorController::class, 'status']);
+    Route::post('/2fa/enable', [TwoFactorController::class, 'enable']);
+    Route::post('/2fa/verify', [TwoFactorController::class, 'verify']);
+    Route::post('/2fa/disable', [TwoFactorController::class, 'disable']);
+
     // AI Tools (authenticated actions)
     Route::post('/tools', [AiToolController::class, 'store']);
     Route::match(['put', 'post'], '/tools/{id}', [AiToolController::class, 'update']); // Support POST with _method=PUT for file uploads

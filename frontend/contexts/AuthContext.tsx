@@ -8,7 +8,8 @@ import type { User, LoginCredentials, RegisterData, AuthResponse } from "@/lib/t
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string; requires2FA?: boolean; twoFactorMethod?: string; userId?: number; message?: string }>;
+  verify2FA: (userId: number, code: string) => Promise<{ success: boolean; error?: string }>;
   register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -45,9 +46,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = async (credentials: LoginCredentials) => {
-    const response = await api.post<AuthResponse>("/api/login", credentials);
+    const response = await api.post<any>("/api/login", credentials);
 
     if (response.data) {
+      // Check if 2FA is required
+      if (response.data.requires_2fa) {
+        return {
+          success: false,
+          requires2FA: true,
+          twoFactorMethod: response.data.two_factor_method,
+          userId: response.data.user_id,
+          message: response.data.message
+        };
+      }
+
+      // Normal login without 2FA
+      localStorage.setItem("token", response.data.token);
+      setUser(response.data.user);
+      return { success: true };
+    }
+
+    return { success: false, error: response.error };
+  };
+
+  const verify2FA = async (userId: number, code: string) => {
+    const response = await api.post<AuthResponse>("/api/2fa/verify-login", {
+      user_id: userId,
+      code: code
+    });
+
+    if (response.data && response.data.token) {
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
       return { success: true };
@@ -81,6 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         loading,
         login,
+        verify2FA,
         register,
         logout,
         isAuthenticated: !!user,

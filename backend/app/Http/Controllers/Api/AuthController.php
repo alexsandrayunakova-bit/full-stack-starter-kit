@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -25,6 +27,29 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        // Check if 2FA is enabled
+        if ($user->two_factor_enabled) {
+            // If email 2FA, send code
+            if ($user->two_factor_method === 'email') {
+                $code = rand(100000, 999999);
+                Cache::put("2fa_login_{$user->id}", $code, 600);
+
+                Mail::raw("Your login verification code is: {$code}\n\nThis code will expire in 10 minutes.", function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Login Verification Code');
+                });
+            }
+
+            return response()->json([
+                'requires_2fa' => true,
+                'two_factor_method' => $user->two_factor_method,
+                'user_id' => $user->id,
+                'message' => $user->two_factor_method === 'email'
+                    ? 'Verification code sent to your email'
+                    : 'Please enter your authenticator code',
             ]);
         }
 

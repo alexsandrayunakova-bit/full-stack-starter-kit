@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('aiTools')->get();
+        // Cache categories for 1 hour (3600 seconds)
+        $categories = Cache::remember('categories_with_count', 3600, function () {
+            return Category::withCount('aiTools')->get();
+        });
 
         return response()->json([
             'data' => $categories,

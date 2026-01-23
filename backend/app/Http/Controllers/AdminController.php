@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -55,25 +56,28 @@ class AdminController extends Controller
      */
     public function getStats()
     {
-        $stats = [
-            'total_tools' => AiTool::count(),
-            'pending_tools' => AiTool::where('status', 'pending')->count(),
-            'active_tools' => AiTool::where('status', 'active')->count(),
-            'archived_tools' => AiTool::where('status', 'archived')->count(),
-            'total_users' => User::count(),
-            'total_categories' => Category::count(),
-            'tools_by_category' => AiTool::select('category_id', DB::raw('count(*) as count'))
-                ->with('category:id,name')
-                ->groupBy('category_id')
-                ->get(),
-            'tools_by_status' => AiTool::select('status', DB::raw('count(*) as count'))
-                ->groupBy('status')
-                ->get(),
-            'recent_tools' => AiTool::with(['category', 'creator'])
-                ->orderBy('created_at', 'desc')
-                ->take(10)
-                ->get(),
-        ];
+        // Cache stats for 5 minutes (300 seconds)
+        $stats = Cache::remember('admin_dashboard_stats', 300, function () {
+            return [
+                'total_tools' => AiTool::count(),
+                'pending_tools' => AiTool::where('status', 'pending')->count(),
+                'active_tools' => AiTool::where('status', 'active')->count(),
+                'archived_tools' => AiTool::where('status', 'archived')->count(),
+                'total_users' => User::count(),
+                'total_categories' => Category::count(),
+                'tools_by_category' => AiTool::select('category_id', DB::raw('count(*) as count'))
+                    ->with('category:id,name')
+                    ->groupBy('category_id')
+                    ->get(),
+                'tools_by_status' => AiTool::select('status', DB::raw('count(*) as count'))
+                    ->groupBy('status')
+                    ->get(),
+                'recent_tools' => AiTool::with(['category', 'creator'])
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get(),
+            ];
+        });
 
         return response()->json($stats);
     }
@@ -92,6 +96,9 @@ class AdminController extends Controller
             'tool_name' => $tool->name,
             'previous_status' => $tool->getOriginal('status'),
         ]);
+
+        // Clear caches
+        $this->clearCaches();
 
         return response()->json([
             'message' => 'Tool approved successfully',
@@ -114,6 +121,9 @@ class AdminController extends Controller
             'previous_status' => $tool->getOriginal('status'),
         ]);
 
+        // Clear caches
+        $this->clearCaches();
+
         return response()->json([
             'message' => 'Tool rejected and archived',
             'tool' => $tool->load(['category', 'creator'])
@@ -133,6 +143,9 @@ class AdminController extends Controller
         $this->logActivity('deleted_tool', $id, [
             'tool_name' => $toolName,
         ]);
+
+        // Clear caches
+        $this->clearCaches();
 
         return response()->json([
             'message' => 'Tool deleted successfully'
@@ -294,5 +307,17 @@ class AdminController extends Controller
             'user_agent' => request()->userAgent(),
             'created_at' => now(),
         ]);
+    }
+
+    /**
+     * Clear cached data after tool changes
+     */
+    private function clearCaches()
+    {
+        // Clear admin stats cache
+        Cache::forget('admin_dashboard_stats');
+
+        // Clear categories with count cache
+        Cache::forget('categories_with_count');
     }
 }
