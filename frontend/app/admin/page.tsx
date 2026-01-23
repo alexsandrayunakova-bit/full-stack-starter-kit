@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AppLayout from "@/components/layout/AppLayout";
+import AdminLayout from "@/components/layout/AdminLayout";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 import Card, { CardBody, CardHeader } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { LoadingPage } from "@/components/ui/Loading";
@@ -57,8 +58,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <AppLayout>
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Admin Dashboard" }]} />
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-2">
@@ -208,6 +211,6 @@ export default function AdminDashboard() {
           </Card>
         </div>
       </div>
-    </AppLayout>
+    </AdminLayout>
   );
 }

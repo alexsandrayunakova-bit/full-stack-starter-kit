@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import AppLayout from "@/components/layout/AppLayout";
+import AdminLayout from "@/components/layout/AdminLayout";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 import Card, { CardBody, CardHeader } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
@@ -97,8 +98,15 @@ export default function UserDetail() {
   }
 
   return (
-    <AppLayout>
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Admin", href: "/admin" },
+          { label: "Users", href: "/admin/users" },
+          { label: user?.name || `User #${userId}` }
+        ]} />
+
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
@@ -309,6 +317,6 @@ export default function UserDetail() {
           </Card>
         )}
       </div>
-    </AppLayout>
+    </AdminLayout>
   );
 }
