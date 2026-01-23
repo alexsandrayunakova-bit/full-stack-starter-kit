@@ -82,11 +82,11 @@ services:
       - /app/.next
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://localhost:8001
+      - NEXT_PUBLIC_API_URL=http://backend:8001
       - WATCHPACK_POLLING=true
     command: >
       sh -c "
-        echo 'NEXT_PUBLIC_API_URL=http://localhost:8001' > .env.local &&
+        echo 'NEXT_PUBLIC_API_URL=http://backend:8001' > .env.local &&
         echo '✅ Created/updated .env.local with correct API URL' &&
         echo 'Installing npm dependencies...' &&
         npm install --silent &&
