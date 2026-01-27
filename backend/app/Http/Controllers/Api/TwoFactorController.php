@@ -127,7 +127,7 @@ class TwoFactorController extends Controller
                 ], 400);
             }
 
-            if ($cachedCode != $request->code) {
+            if ($cachedCode !== (string)$request->code) {
                 return response()->json([
                     'error' => 'Invalid verification code'
                 ], 400);
@@ -231,7 +231,7 @@ class TwoFactorController extends Controller
                 ], 400);
             }
 
-            if ($cachedCode != $request->code) {
+            if ($cachedCode !== (string)$request->code) {
                 // Check if it's a recovery code
                 if ($this->verifyRecoveryCode($user, $request->code)) {
                     Cache::forget("2fa_login_{$user->id}");

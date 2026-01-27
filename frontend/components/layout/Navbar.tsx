@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
@@ -14,8 +14,23 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const langMenuRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => pathname === path;
+
+  // Close language menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setLangMenuOpen(false);
+      }
+    }
+
+    if (langMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [langMenuOpen]);
 
   // Navigation links based on role
   const getNavLinks = () => {
@@ -66,31 +81,53 @@ export default function Navbar() {
           {/* User Menu */}
           <div className="hidden md:flex items-center gap-4">
             {/* Language Switcher */}
-            <div className="relative">
+            <div className="relative" ref={langMenuRef}>
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setLangMenuOpen(false);
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setLangMenuOpen(!langMenuOpen);
+                  }
+                }}
                 className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all font-semibold"
                 aria-label="Change language"
+                aria-expanded={langMenuOpen}
+                aria-haspopup="true"
               >
                 {language.toUpperCase()}
               </button>
               {langMenuOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                <div
+                  className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
+                  role="menu"
+                  aria-orientation="vertical"
+                >
                   <button
                     onClick={() => { setLanguage("bg"); setLangMenuOpen(false); }}
+                    onKeyDown={(e) => e.key === "Escape" && setLangMenuOpen(false)}
                     className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "bg" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                    role="menuitem"
+                    aria-current={language === "bg" ? "true" : undefined}
                   >
                     🇧🇬 Български
                   </button>
                   <button
                     onClick={() => { setLanguage("en"); setLangMenuOpen(false); }}
+                    onKeyDown={(e) => e.key === "Escape" && setLangMenuOpen(false)}
                     className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "en" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                    role="menuitem"
+                    aria-current={language === "en" ? "true" : undefined}
                   >
                     🇬🇧 English
                   </button>
                   <button
                     onClick={() => { setLanguage("de"); setLangMenuOpen(false); }}
+                    onKeyDown={(e) => e.key === "Escape" && setLangMenuOpen(false)}
                     className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${language === "de" ? "bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300" : "text-gray-700 dark:text-gray-300"}`}
+                    role="menuitem"
+                    aria-current={language === "de" ? "true" : undefined}
                   >
                     🇩🇪 Deutsch
                   </button>
