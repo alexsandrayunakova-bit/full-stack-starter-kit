@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AppLayout from "@/components/layout/AppLayout";
+import AdminLayout from "@/components/layout/AdminLayout";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 import Card, { CardBody, CardHeader } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import { LoadingPage } from "@/components/ui/Loading";
@@ -120,8 +121,14 @@ export default function UsersManagement() {
   }
 
   return (
-    <AppLayout>
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Admin", href: "/admin" },
+          { label: "Users Management" }
+        ]} />
+
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
@@ -284,6 +291,6 @@ export default function UsersManagement() {
           </CardBody>
         </Card>
       </div>
-    </AppLayout>
+    </AdminLayout>
   );
 }

@@ -14,7 +14,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Login() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, verify2FA } = useAuth();
   const { showToast } = useToast();
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
@@ -23,6 +23,10 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [show2FA, setShow2FA] = useState(false);
+  const [twoFactorMethod, setTwoFactorMethod] = useState<string>("");
+  const [userId, setUserId] = useState<number>(0);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +37,30 @@ export default function Login() {
     if (result.success) {
       showToast(t("auth.loginSuccess") || "Login successful!", "success");
       router.push("/dashboard");
+    } else if (result.requires2FA) {
+      // Show 2FA form
+      setShow2FA(true);
+      setTwoFactorMethod(result.twoFactorMethod || "");
+      setUserId(result.userId || 0);
+      showToast(result.message || "Please enter your 2FA code", "info");
     } else {
       showToast(result.error || t("auth.loginError") || "Login error", "error");
+    }
+
+    setLoading(false);
+  };
+
+  const handle2FASubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const result = await verify2FA(userId, twoFactorCode);
+
+    if (result.success) {
+      showToast("2FA verified successfully!", "success");
+      router.push("/dashboard");
+    } else {
+      showToast(result.error || "Invalid 2FA code", "error");
     }
 
     setLoading(false);
@@ -47,14 +73,15 @@ export default function Login() {
         <Card className="w-full max-w-md shadow-2xl border-2 border-primary-200">
         <CardHeader>
           <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-            {t("auth.loginTitle")}
+            {show2FA ? "Two-Factor Authentication" : t("auth.loginTitle")}
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-400 mt-2 font-semibold">
-            AI Tools Platform
+            {show2FA ? "Enter your verification code" : "AI Tools Platform"}
           </p>
         </CardHeader>
 
         <CardBody>
+          {!show2FA ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               type="email"
@@ -113,6 +140,53 @@ export default function Login() {
               </Link>
             </div>
           </form>
+          ) : (
+          <form onSubmit={handle2FASubmit} className="space-y-6">
+            <div className="text-center mb-4">
+              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4 mb-4">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {twoFactorMethod === "email"
+                    ? "We've sent a 6-digit verification code to your email. Please check your inbox and enter the code below."
+                    : "Open your authenticator app and enter the 6-digit code for this account."}
+                </p>
+              </div>
+            </div>
+
+            <Input
+              type="text"
+              label="Verification Code"
+              value={twoFactorCode}
+              onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
+              required
+              fullWidth
+              placeholder="123456"
+              maxLength={8}
+              className="text-center text-2xl tracking-widest"
+            />
+
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="secondary"
+                fullWidth
+                onClick={() => {
+                  setShow2FA(false);
+                  setTwoFactorCode("");
+                }}
+                disabled={loading}
+              >
+                Back
+              </Button>
+              <Button type="submit" fullWidth disabled={loading || twoFactorCode.length === 0}>
+                {loading ? "Verifying..." : "Verify"}
+              </Button>
+            </div>
+
+            <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+              Didn't receive the code? Check your spam folder or try again.
+            </div>
+          </form>
+          )}
         </CardBody>
       </Card>
       </div>
