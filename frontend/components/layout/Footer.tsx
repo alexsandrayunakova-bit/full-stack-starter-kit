@@ -25,71 +25,61 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-              {t("footer.quickLinks") || "Quick Links"}
+              {t("footer.quickLinks")}
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/tools" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("navbar.tools") || "Browse Tools"}
+                  {t("footer.tools")}
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("navbar.dashboard") || "Dashboard"}
+                  {t("navbar.dashboard")}
                 </Link>
               </li>
               <li>
                 <Link href="/profile" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("navbar.profile") || "Profile"}
+                  {t("navbar.profile")}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* About Platform */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-              {t("footer.resources") || "Resources"}
+              {t("footer.aboutPlatform")}
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.documentation") || "Documentation"}
-                </a>
+                <Link href="/about-us" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {t("footer.aboutUs")}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.api") || "API"}
-                </a>
+                <Link href="/about-project" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {t("footer.aboutProject")}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.support") || "Support"}
-                </a>
+                <Link href="/future-projects" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {t("footer.futureProjects")}
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Contacts */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-              {t("footer.legal") || "Legal"}
+              {t("footer.contacts")}
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.privacy") || "Privacy Policy"}
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.terms") || "Terms of Service"}
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                  {t("footer.cookies") || "Cookie Policy"}
-                </a>
+                <Link href="/contact" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {t("footer.contact")}
+                </Link>
               </li>
             </ul>
           </div>

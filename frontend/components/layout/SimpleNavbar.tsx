@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 
 export default function SimpleNavbar() {
-  const { theme, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
@@ -54,15 +52,6 @@ export default function SimpleNavbar() {
                 </div>
               )}
             </div>
-
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
-              aria-label="Toggle dark mode"
-            >
-              {theme === "dark" ? "☀️" : "🌙"}
-            </button>
           </div>
         </div>
       </div>
