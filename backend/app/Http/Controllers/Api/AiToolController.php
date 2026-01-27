@@ -14,8 +14,11 @@ class AiToolController extends Controller
      */
     public function index(Request $request)
     {
-        $query = AiTool::with(['category', 'creator.role', 'recommendations', 'tags'])
-    ->active();
+        // Eager load relationships and aggregates to prevent N+1 queries
+        $query = AiTool::with(['category', 'creator.role', 'tags'])
+            ->withAvg('recommendations', 'rating')
+            ->withCount('recommendations')
+            ->active();
 
         // Filter by category
         if ($request->has('category_id')) {
@@ -30,18 +33,23 @@ class AiToolController extends Controller
             });
         }
 
-        // Search by name or description
+        // Search by name or description - escape LIKE wildcards
         if ($request->has('search')) {
-            $search = $request->search;
+            $search = str_replace(['%', '_', '\\'], ['\\%', '\\_', '\\\\'], $request->search);
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        // Sort
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        // Sort - with whitelist to prevent SQL injection
+        $allowedSortFields = ['name', 'created_at', 'views_count', 'status'];
+        $sortBy = in_array($request->get('sort_by'), $allowedSortFields)
+            ? $request->get('sort_by')
+            : 'created_at';
+        $sortOrder = in_array(strtolower($request->get('sort_order', 'desc')), ['asc', 'desc'])
+            ? strtolower($request->get('sort_order', 'desc'))
+            : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
         $tools = $query->paginate($request->get('per_page', 12));
@@ -129,7 +137,10 @@ public function store(Request $request)
      */
     public function show($id)
     {
+        // Eager load relationships and aggregates to prevent N+1 queries
         $tool = AiTool::with(['category', 'creator.role', 'recommendations.user.role', 'tags'])
+            ->withAvg('recommendations', 'rating')
+            ->withCount('recommendations')
             ->findOrFail($id);
 
         // Increment views
@@ -137,7 +148,7 @@ public function store(Request $request)
 
         return response()->json([
             'tool' => $tool,
-            'average_rating' => $tool->average_rating,
+            'average_rating' => $tool->recommendations_avg_rating,
             'recommendations_count' => $tool->recommendations_count,
         ]);
     }

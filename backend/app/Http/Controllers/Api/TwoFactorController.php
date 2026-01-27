@@ -55,7 +55,7 @@ class TwoFactorController extends Controller
             ]);
         } elseif ($method === 'email') {
             // Generate and send verification code via email
-            $code = rand(100000, 999999);
+            $code = random_int(100000, 999999);
 
             // Store code in cache for 10 minutes
             Cache::put("2fa_setup_{$user->id}", $code, 600);

@@ -40,9 +40,14 @@ class AdminController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Sort
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        // Sort - with whitelist to prevent SQL injection
+        $allowedSortFields = ['name', 'created_at', 'status', 'views_count'];
+        $sortBy = in_array($request->get('sort_by'), $allowedSortFields)
+            ? $request->get('sort_by')
+            : 'created_at';
+        $sortOrder = in_array(strtolower($request->get('sort_order', 'desc')), ['asc', 'desc'])
+            ? strtolower($request->get('sort_order', 'desc'))
+            : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
         // Paginate

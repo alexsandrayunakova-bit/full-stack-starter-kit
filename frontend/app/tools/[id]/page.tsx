@@ -8,6 +8,7 @@ import Card, { CardBody, CardHeader } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { LoadingPage } from "@/components/ui/Loading";
+import ToolRecommendations from "@/components/ToolRecommendations";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 import api from "@/lib/api";
@@ -30,10 +31,18 @@ export default function ToolDetailPage() {
   const loadTool = async () => {
     setLoading(true);
 
-    const response = await api.get<AiTool>(`/api/tools/${params.id}`);
+    const response = await api.get<any>(`/api/tools/${params.id}`);
 
     if (response.data) {
-      setTool(response.data);
+      // Handle both formats: direct tool or { tool, average_rating, recommendations_count }
+      const toolData = response.data.tool || response.data;
+      if (response.data.average_rating !== undefined) {
+        toolData.average_rating = response.data.average_rating;
+      }
+      if (response.data.recommendations_count !== undefined) {
+        toolData.recommendations_count = response.data.recommendations_count;
+      }
+      setTool(toolData);
     } else {
       showToast("Инструментът не е намерен", "error");
       router.push("/tools");
@@ -232,6 +241,14 @@ export default function ToolDetailPage() {
             </CardBody>
           </Card>
         )}
+
+        {/* Recommendations and Ratings */}
+        <ToolRecommendations
+          toolId={tool.id}
+          recommendations={tool.recommendations || []}
+          averageRating={tool.average_rating}
+          onRecommendationAdded={loadTool}
+        />
 
         {/* Back Button */}
         <div className="mt-8">

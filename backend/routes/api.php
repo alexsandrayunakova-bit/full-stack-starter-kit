@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AiToolController;
 use App\Http\Controllers\Api\CategoryController;
@@ -25,13 +24,13 @@ Route::get('/status', function () {
     ]);
 });
 
-// Public routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+// Public routes with rate limiting to prevent brute force attacks
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 attempts per minute
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,1'); // 3 attempts per minute
 
-// 2FA public routes (for login verification)
-Route::post('/2fa/verify-login', [TwoFactorController::class, 'verifyLogin']);
-Route::post('/2fa/send-login-code', [TwoFactorController::class, 'sendLoginCode']);
+// 2FA public routes (for login verification) with rate limiting
+Route::post('/2fa/verify-login', [TwoFactorController::class, 'verifyLogin'])->middleware('throttle:5,1');
+Route::post('/2fa/send-login-code', [TwoFactorController::class, 'sendLoginCode'])->middleware('throttle:3,1');
 
 // Public - Get tags (no auth required)
 Route::get('/tags', [App\Http\Controllers\Api\TagController::class, 'index']);
