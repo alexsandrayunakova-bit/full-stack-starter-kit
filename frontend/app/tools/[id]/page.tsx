@@ -255,6 +255,13 @@ export default function ToolDetailPage() {
 
                   {canEdit && (
                     <div className="flex gap-2">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => router.push(`/tools/${tool.id}/edit`)}
+                      >
+                        Редактирай
+                      </Button>
                       <Button variant="danger" size="sm" onClick={handleDelete}>
                         Изтрий
                       </Button>
