@@ -98,7 +98,6 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - /app/.next
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8001
@@ -109,6 +108,8 @@ services:
         echo '✅ Created/updated .env.local with correct API URL' &&
         echo 'Installing npm dependencies...' &&
         npm install --silent &&
+        echo '🧹 Clearing Next.js cache...' &&
+        rm -rf .next &&
         echo '================================================' &&
         echo '✅ Frontend server starting on http://localhost:3000' &&
         echo '================================================' &&
