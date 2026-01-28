@@ -47,7 +47,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Footer
     "footer.copyright": "© 2026 AI Tools Platform. Всички права запазени.",
     "footer.rights": "Всички права запазени",
-    "footer.creator": "Alexa Yunakova",
+    "footer.creator": "Alexa Yunakova & Claude",
 
     // Auth
     "auth.loginTitle": "Вход в системата",
@@ -128,7 +128,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Footer
     "footer.copyright": "© 2026 AI Tools Platform. All rights reserved.",
     "footer.rights": "All rights reserved",
-    "footer.creator": "Alexa Yunakova",
+    "footer.creator": "Alexa Yunakova & Claude",
 
     // Auth
     "auth.loginTitle": "Login",
@@ -209,7 +209,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Footer
     "footer.copyright": "© 2026 AI Tools Platform. Alle Rechte vorbehalten.",
     "footer.rights": "Alle Rechte vorbehalten",
-    "footer.creator": "Alexa Yunakova",
+    "footer.creator": "Alexa Yunakova & Claude",
 
     // Auth
     "auth.loginTitle": "Anmelden",
