@@ -55,7 +55,7 @@ class TwoFactorController extends Controller
             ]);
         } elseif ($method === 'email') {
             // Generate and send verification code via email
-            $code = rand(100000, 999999);
+            $code = random_int(100000, 999999);
 
             // Store code in cache for 10 minutes
             Cache::put("2fa_setup_{$user->id}", $code, 600);
@@ -127,7 +127,7 @@ class TwoFactorController extends Controller
                 ], 400);
             }
 
-            if ($cachedCode != $request->code) {
+            if ((string)$cachedCode !== (string)$request->code) {
                 return response()->json([
                     'error' => 'Invalid verification code'
                 ], 400);
@@ -231,7 +231,7 @@ class TwoFactorController extends Controller
                 ], 400);
             }
 
-            if ($cachedCode != $request->code) {
+            if ((string)$cachedCode !== (string)$request->code) {
                 // Check if it's a recovery code
                 if ($this->verifyRecoveryCode($user, $request->code)) {
                     Cache::forget("2fa_login_{$user->id}");
@@ -278,7 +278,7 @@ class TwoFactorController extends Controller
         }
 
         // Generate and send verification code via email
-        $code = rand(100000, 999999);
+        $code = random_int(100000, 999999);
 
         // Store code in cache for 10 minutes
         Cache::put("2fa_login_{$user->id}", $code, 600);

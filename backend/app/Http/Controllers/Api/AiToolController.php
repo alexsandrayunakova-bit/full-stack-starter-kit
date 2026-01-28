@@ -57,32 +57,38 @@ public function store(Request $request)
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string',
-        'link' => 'nullable|url',
-        'documentation_link' => 'nullable|url',
+        'url' => 'nullable|url',
+        'documentation_url' => 'nullable|url',
         'how_to_use' => 'nullable|string',
-        'real_examples' => 'nullable|string',
+        'examples' => 'nullable|string',
+        'logo_url' => 'nullable|url',
         'category_id' => 'required|exists:categories,id',
         'role_ids' => 'nullable|array',
         'role_ids.*' => 'exists:roles,id',
+        'suitable_for_roles' => 'nullable|array',
+        'suitable_for_roles.*' => 'exists:roles,id',
         'tag_ids' => 'nullable|array',
         'tag_ids.*' => 'exists:tags,id',
         'images' => 'nullable|array',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
+    $roleIds = $validated['role_ids'] ?? $validated['suitable_for_roles'] ?? [];
+
     // Create the tool
     $tool = AiTool::create([
         'name' => $validated['name'],
         'description' => $validated['description'],
-        'url' => $validated['link'] ?? null,
-        'documentation_url' => $validated['documentation_link'] ?? null,
+        'url' => $validated['url'] ?? null,
+        'documentation_url' => $validated['documentation_url'] ?? null,
         'how_to_use' => $validated['how_to_use'] ?? null,
-        'examples' => $validated['real_examples'] ?? null,
+        'examples' => $validated['examples'] ?? null,
+        'logo_url' => $validated['logo_url'] ?? null,
         'category_id' => $validated['category_id'],
         'created_by' => $request->user()->id,
         'slug' => \Illuminate\Support\Str::slug($validated['name']),
         'status' => 'active',
-        'suitable_for_roles' => $validated['role_ids'] ?? [], // JSON поле
+        'suitable_for_roles' => $roleIds,
     ]);
 
     // Sync tags if provided

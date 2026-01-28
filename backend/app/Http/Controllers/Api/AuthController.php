@@ -34,7 +34,7 @@ class AuthController extends Controller
         if ($user->two_factor_enabled) {
             // If email 2FA, send code
             if ($user->two_factor_method === 'email') {
-                $code = rand(100000, 999999);
+                $code = random_int(100000, 999999);
                 Cache::put("2fa_login_{$user->id}", $code, 600);
 
                 Mail::raw("Your login verification code is: {$code}\n\nThis code will expire in 10 minutes.", function ($message) use ($user) {
@@ -85,9 +85,9 @@ class AuthController extends Controller
                 'required',
                 'string',
                 'min:8',
-                'max:12',
+                'max:128',
                 'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,12}$/', // At least 1 lowercase, 1 uppercase, 1 digit, no special chars
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,128}$/',
             ],
             'role_id' => 'required|exists:roles,id',
             'company' => 'nullable|string|max:255',
