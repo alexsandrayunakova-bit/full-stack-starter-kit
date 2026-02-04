@@ -102,7 +102,7 @@ export default function Footer() {
               © {currentYear} AI Tools Platform. {t("footer.rights") || "All rights reserved."}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              {t("footer.madeBy") || "Made with"} ❤️ {t("footer.by") || "by"} Alexa Yunakova
+              Created by Alexa Yunakova & Claude &lt;3
             </p>
           </div>
         </div>
