@@ -125,7 +125,7 @@ export default function Register() {
             {t("auth.register")}
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-400 mt-2 font-semibold">
-            Create new account in AI Tools Platform
+            {t("auth.registerSubtitle")}
           </p>
         </CardHeader>
 
